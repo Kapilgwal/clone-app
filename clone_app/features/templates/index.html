@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Navbar Example</title>
+    <style>
+      /* Basic styling for body */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+      }
+
+      /* Navbar container */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #343a40;
+        padding: 10px 20px;
+        color: white;
+      }
+
+      .navbar .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+        text-decoration: none;
+      }
+
+      /* Navbar links */
+      .navbar-links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+      }
+
+      .navbar-links li {
+        display: inline;
+      }
+
+      .navbar-links a {
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+        transition: color 0.3s;
+      }
+
+      .navbar-links a:hover {
+        color: #007bff;
+      }
+
+      /* Toggle button for mobile view */
+      .navbar-toggler {
+        display: none;
+        background-color: #343a40;
+        border: none;
+        color: white;
+        font-size: 28px;
+      }
+
+      /* Media query for responsive navbar */
+      @media screen and (max-width: 768px) {
+        .navbar-links {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 60px;
+          right: 20px;
+          background-color: #343a40;
+          padding: 20px;
+          width: 200px;
+          border-radius: 5px;
+        }
+
+        .navbar-links.active {
+          display: flex;
+        }
+
+        .navbar-toggler {
+          display: block;
+        }
+
+        .navbar-links a {
+          font-size: 20px;
+          margin: 10px 0;
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <a href="#" class="logo">MyApp</a>
+
+      <!-- Toggle button for mobile -->
+      <button class="navbar-toggler" id="navbar-toggler">&#9776;</button>
+
+      <!-- Navbar links -->
+      <ul class="navbar-links" id="navbar-links">
+        <li><a href="/features/home">Home</a></li>
+        <li><a href="/features/reels">Reels</a></li>
+        <li><a href="/features/search">Search</a></li>
+        <li><a href="/features/myprofile">MyProfile</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content Block -->
+    <div id="main-content">
+      {% block main_content %}
+      {% endblock %}
+    </div>
+
+    <script>
+      // Toggle the navbar links visibility for mobile
+      const navbarToggler = document.getElementById('navbar-toggler');
+      const navbarLinks = document.getElementById('navbar-links');
+
+      navbarToggler.addEventListener('click', () => {
+        navbarLinks.classList.toggle('active');
+      });
+    </script>
+  </body>
+</html>

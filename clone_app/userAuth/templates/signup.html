@@ -4,27 +4,158 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Signup</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #555;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      .error {
+        color: red;
+        font-size: 12px;
+        margin-bottom: 15px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Signup Page</h1>
-    <form action="{% url 'registration' %}" method="POST">
-      {% csrf_token %}
-      <label>Username</label>
-      <input type="text" name="username" required />
-      
-      <label>Name</label>
-      <input type="text" name="name" required />
-      
-      <label>Email</label>
-      <input type="email" name="email" required />
-      
-      <label>Age</label>
-      <input type="number" name="age" required />
-      
-      <label>Password</label>
-      <input type="password" name="password" required />
-      
-      <button type="submit">Submit</button>
-    </form>
+    <div class="container">
+      <h1>Signup Page</h1>
+      <form id="signupForm" action="{% url 'registration' %}" method="POST">
+        {% csrf_token %}
+        <div>
+          <label for="username">Username</label>
+          <input type="text" name="username" id="username" required />
+          <div class="error" id="usernameError"></div>
+        </div>
+
+        <div>
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name" required />
+          <div class="error" id="nameError"></div>
+        </div>
+
+        <div>
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email" required />
+          <div class="error" id="emailError"></div>
+        </div>
+
+        <div>
+          <label for="age">Age</label>
+          <input type="number" name="age" id="age" required min="18" />
+          <div class="error" id="ageError"></div>
+        </div>
+
+        <div>
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" required />
+          <div class="error" id="passwordError"></div>
+        </div>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+
+    <script>
+      document.getElementById("signupForm").addEventListener("submit", function (event) {
+        let isValid = true;
+
+        // Clear previous errors
+        document.querySelectorAll(".error").forEach((el) => (el.textContent = ""));
+
+        // Username validation
+        const username = document.getElementById("username").value;
+        if (username.trim() === "") {
+          document.getElementById("usernameError").textContent = "Username is required.";
+          isValid = false;
+        }
+
+        // Name validation
+        const name = document.getElementById("name").value;
+        if (name.trim() === "") {
+          document.getElementById("nameError").textContent = "Name is required.";
+          isValid = false;
+        }
+
+        // Email validation
+        const email = document.getElementById("email").value;
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailPattern.test(email)) {
+          document.getElementById("emailError").textContent = "Please enter a valid email.";
+          isValid = false;
+        }
+
+        // Age validation
+        const age = document.getElementById("age").value;
+        if (age < 18) {
+          document.getElementById("ageError").textContent = "You must be at least 18 years old.";
+          isValid = false;
+        }
+
+        // Password validation
+        const password = document.getElementById("password").value;
+        if (password.length < 6) {
+          document.getElementById("passwordError").textContent = "Password must be at least 6 characters.";
+          isValid = false;
+        }
+
+        if (!isValid) {
+          event.preventDefault(); // Prevent form submission if validation fails
+        }
+      });
+    </script>
   </body>
 </html>
+
+

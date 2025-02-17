@@ -5,4 +5,5 @@ urlpatterns = [
     path('reels/',reels),
     path('myprofile/',myprofile),
     path('search/',search),
+    path('myprofile/posts/',posts),
 ]

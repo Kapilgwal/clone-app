@@ -1,9 +1,9 @@
-from django.shortcuts import render
-from django.core.files.storage import FileSystemStorage
+from django.shortcuts import render, redirect
+from .models import Posts  
 
-# Create your views here.
 def home(request):
-    return render(request, "home.html")
+    posts = Posts.objects.all()  # Fetch all posts
+    return render(request, "home.html", {"posts": posts})  # Use "posts" instead of "post"
 
 def search(request):
     return render(request, "search.html")
@@ -12,17 +12,16 @@ def reels(request):
     return render(request, "reels.html")
 
 def myprofile(request):
-    return render(request, "myprofile.html")
+    posts = Posts.objects.all()  # Fetch posts to display
+    return render(request, "myprofile.html", {"posts": posts})  # Now posts is properly defined
 
 def posts(request):
     if request.method == "POST" and request.FILES.get("image"):
-        image = request.FILES["image"]  
+        image = request.FILES["image"]
         
-        fs = FileSystemStorage()
-        filename = fs.save(image.name, image)
-        file_url = fs.url(filename)
-
-        return render(request, "myprofile.html", {"file_url": file_url})
+        post = Posts(image=image)  # Save uploaded image in database
+        post.save()
+        
+        return redirect("myprofile")  # Redirect to profile after upload
 
     return render(request, "myprofile.html")
-
